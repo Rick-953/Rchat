@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Rchat - 登录</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <h1 class="logo">💬 Rchat</h1>
+      <p class="subtitle">轻量级实时聊天系统</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="login">登录</button>
+        <button class="tab-btn" data-tab="register">注册</button>
+      </div>
+
+      <form id="loginForm" class="auth-form active">
+        <div class="form-group">
+          <input type="text" id="loginUsername" placeholder="用户名" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <input type="password" id="loginPassword" placeholder="密码" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary">登录</button>
+        <div class="error-message" id="loginError"></div>
+      </form>
+
+      <form id="registerForm" class="auth-form">
+        <div class="form-group">
+          <input type="text" id="registerUsername" placeholder="用户名（3-20字符）" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <input type="password" id="registerPassword" placeholder="密码（至少6个字符）" required autocomplete="new-password">
+        </div>
+        <div class="form-group">
+          <input type="password" id="registerConfirmPassword" placeholder="确认密码" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn btn-primary">注册</button>
+        <div class="error-message" id="registerError"></div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/login.js"></script>
+</body>
+</html>

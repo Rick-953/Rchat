@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Rchat - 聊天</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="chat-page">
+  <!-- 会话列表页（主页） -->
+  <div class="conversation-list-page" id="conversationListPage">
+    <header class="chat-header">
+      <div class="header-left">
+        <h1 class="header-title">💬 Rchat</h1>
+      </div>
+      <div class="header-right">
+        <span class="online-indicator">🟢 <span id="onlineCount">0</span>人在线</span>
+        <button class="btn-icon" id="settingsBtn">⚙️</button>
+      </div>
+    </header>
+
+    <div class="conversation-tabs">
+      <button class="conv-tab active" data-tab="chats">聊天</button>
+      <button class="conv-tab" data-tab="contacts">联系人</button>
+      <button class="conv-tab" data-tab="requests">请求<span class="badge" id="requestBadge" style="display:none;">0</span></button>
+    </div>
+
+    <!-- 聊天列表 -->
+    <div class="conv-tab-content active" id="chatsTab">
+      <div class="conversation-item lobby-item" data-room="lobby">
+        <div class="conv-avatar">🏛️</div>
+        <div class="conv-info">
+          <div class="conv-name">全员大厅</div>
+          <div class="conv-last-msg">点击进入群聊...</div>
+        </div>
+        <div class="conv-time"></div>
+      </div>
+      <div id="privateConversations"></div>
+    </div>
+
+    <!-- 联系人列表 -->
+    <div class="conv-tab-content" id="contactsTab">
+      <div class="section-title">在线用户</div>
+      <div class="user-list" id="onlineUserList"></div>
+      <div class="section-title">我的好友</div>
+      <div class="user-list" id="friendList"></div>
+      <div class="empty-state" id="emptyFriends" style="display:none;">
+        <p>还没有好友</p>
+        <p>点击在线用户添加好友吧！</p>
+      </div>
+    </div>
+
+    <!-- 好友请求 -->
+    <div class="conv-tab-content" id="requestsTab">
+      <div class="request-list" id="requestList"></div>
+      <div class="empty-state" id="emptyRequests" style="display:none;">
+        <p>暂无好友请求</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 聊天页面（隐藏） -->
+  <div class="chat-container" id="chatContainer" style="display:none;">
+    <header class="chat-header">
+      <div class="header-left">
+        <button class="btn-back" id="backBtn">←</button>
+        <h1 class="header-title" id="chatTitle">聊天</h1>
+      </div>
+      <div class="header-right">
+        <span class="online-indicator">🟢 <span id="chatOnlineCount">0</span>人</span>
+      </div>
+    </header>
+
+    <div class="messages-container" id="messagesContainer">
+      <div class="welcome-message">
+        <h3>开始聊天吧 😊</h3>
+      </div>
+    </div>
+
+    <div class="typing-indicator" id="typingIndicator" style="display:none;">
+      <span></span> 正在输入...
+    </div>
+
+    <div class="message-input-area">
+      <button class="btn-icon" id="fileBtn" title="上传文件">📎</button>
+      <input type="file" id="fileInput" style="display:none;">
+      <textarea 
+        id="messageInput" 
+        placeholder="输入消息... (Enter发送，Shift+Enter换行)" 
+        rows="1"
+      ></textarea>
+      <button class="btn-send" id="sendBtn">发送</button>
+    </div>
+
+    <div class="upload-progress" id="uploadProgress" style="display:none;">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <span class="progress-text" id="progressText">上传中... 0%</span>
+    </div>
+  </div>
+
+  <!-- 设置面板 -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>设置</h2>
+        <button class="btn-close" id="closeSettings">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <label>主题模式</label>
+          <div class="theme-buttons">
+            <button class="btn-theme" data-theme="light">☀️ 浅色</button>
+            <button class="btn-theme" data-theme="dark">🌙 深色</button>
+            <button class="btn-theme" data-theme="auto">🔄 跟随系统</button>
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>当前用户</label>
+          <p class="user-info" id="currentUserInfo"></p>
+        </div>
+        <div class="setting-item">
+          <button class="btn btn-secondary" id="logoutBtn">退出登录</button>
+          <button class="btn btn-danger" id="deleteAccountBtn">删除账号</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 添加好友弹窗 -->
+  <div class="modal" id="addFriendModal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h2>添加好友</h2>
+        <button class="btn-close" id="closeAddFriend">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">添加 <strong id="friendNameToAdd"></strong> 为好友？</p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancelAddFriend">否</button>
+          <button class="btn btn-primary" id="confirmAddFriend">是</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除账号确认弹窗 -->
+  <div class="modal" id="deleteAccountModal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h2>⚠️ 删除账号</h2>
+        <button class="btn-close" id="closeDeleteAccount">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">确定要删除账号吗？</p>
+        <p class="warning-text">此操作不可恢复！所有数据将被永久删除。</p>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" id="cancelDeleteAccount">取消</button>
+          <button class="btn btn-danger" id="confirmDeleteAccount">确定删除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/chat.js"></script>
+</body>
+</html>
