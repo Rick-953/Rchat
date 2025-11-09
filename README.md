@@ -1226,12 +1226,12 @@ chmod +x /opt/rchat/admin/rchat-admin.sh
 
 ***
 
-**手册版本：** v1.0
-**适用系统：** Debian 12 / Ubuntu 20.04+
-**最后更新：** 2025-11-09
-**技术支持：** rick080402@gmail.com
+**手册版本：** v1.0  
+**适用系统：** Debian 12 / Ubuntu 20.04+  
+**最后更新：** 2025-11-09  
+**技术支持：** rick080402@gmail.com  
 
-如有问题，请检查日志文件或在 GitHub Issues 提交问题。
+如有问题，请检查日志文件或在 GitHub Issues 提交问题。  
 
 ***
 
