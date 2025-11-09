@@ -4,7 +4,7 @@
 
 ## 系统概述
 
-Rchat 是一个基于 Node.js + Socket.IO + SQLite 的轻量级实时聊天系统，支持群聊、私聊、好友系统和文件传输。
+Rchat 是一个基于 Node.js + Socket.IO + SQLite 的轻量级实时聊天系统，支持群聊、私聊、好友系统和文件传输。您可以通过rick.quest中点击Rchat快速体验官方版本！
 
 ### 核心技术栈
 
